@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using PizzaPanic;
 
 public class PlayerTouchController : MonoBehaviour {
 
@@ -22,12 +23,17 @@ public class PlayerTouchController : MonoBehaviour {
 	// passa a cobrir a metade correspondente da tela por cálculo direto.
 	public Transform player;
 	private string lado;
+	private Transform bandejaTransform;
 
 	// Use this for initialization
 	void Start () {
 		lastMovementTime = Time.timeSinceLevelLoad;
 		pls = GameObject.FindGameObjectWithTag("hero").GetComponent<SpriteRenderer>();
 		lado = gameObject.name;
+		GameObject bandeja = GameObject.FindGameObjectWithTag("bandeja");
+		if (bandeja != null) {
+			bandejaTransform = bandeja.transform;
+		}
 		player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
 	}
@@ -41,7 +47,10 @@ public class PlayerTouchController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (Time.timeSinceLevelLoad - lastMovementTime >= delayBetweenMovements) {
+		// Quanto mais pizzas na bandeja, mais devagar o jogador anda
+		float atraso = delayBetweenMovements * Difficulty.FatorPeso (Difficulty.PizzasNaBandeja (bandejaTransform));
+
+		if (Time.timeSinceLevelLoad - lastMovementTime >= atraso) {
 
 			foreach (UnityEngine.Touch touch in Input.touches) {
 

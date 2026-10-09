@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using PizzaPanic;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -29,6 +30,12 @@ public class Pizza : MonoBehaviour {
     }
 
     void OnCollisionEnter2D(Collision2D colisor) {
+
+        // Pizza de vida e pizza queimada não custam vida ao cair no chão
+        if (colisor.gameObject.name == "chao" && PizzaEspecial.IgnoraChao(gameObject)) {
+            Destroy(gameObject);
+            return;
+        }
 
         if (!naBandeja) {
             if (colisor.gameObject.tag == "bandeja" || ((colisor.gameObject.tag == "pizza") && (colisor.transform.GetComponent<Pizza>().naBandeja == true))) {

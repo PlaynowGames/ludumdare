@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using PizzaPanic;
 
 public class PlayerController : MonoBehaviour {
 
@@ -17,17 +18,26 @@ public class PlayerController : MonoBehaviour {
     private float lastMovementTime;
     private float input;
     private float orientation;
+    private Transform bandejaTransform;
 
     // Use this for initialization
     void Start() {
         lastMovementTime = Time.timeSinceLevelLoad;
         pls = GameObject.FindGameObjectWithTag("hero").GetComponent<SpriteRenderer>();
+
+        GameObject bandeja = GameObject.FindGameObjectWithTag("bandeja");
+        if (bandeja != null) {
+            bandejaTransform = bandeja.transform;
+        }
     }
 
 
     // Update is called once per frame
     void Update() {
-        if (Time.timeSinceLevelLoad - lastMovementTime >= delayBetweenMovements) {
+        // Quanto mais pizzas na bandeja, mais devagar o jogador anda
+        float atraso = delayBetweenMovements * Difficulty.FatorPeso(Difficulty.PizzasNaBandeja(bandejaTransform));
+
+        if (Time.timeSinceLevelLoad - lastMovementTime >= atraso) {
             input = Input.GetAxisRaw("Horizontal");
 
             if (input > 0.1) {

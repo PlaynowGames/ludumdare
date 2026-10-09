@@ -1,0 +1,10 @@
+{
+  "name": "com.playnow.pizzapanic.core",
+  "version": "1.0.0",
+  "displayName": "Pizza Panic Core",
+  "description": "Sistemas compartilhados entre as versões desktop e mobile do Pizza Panic: combo, dificuldade, pizzas especiais, pausa, volume e tutorial.",
+  "unity": "6000.0",
+  "dependencies": {
+    "com.unity.ugui": "2.0.0"
+  }
+}

@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
+using PizzaPanic;
 
 public class Bau : MonoBehaviour {
 
@@ -12,6 +13,7 @@ public class Bau : MonoBehaviour {
     private float timeSinceLastCollision;
     private int multiplicationRatio = 1;
     private bool cheio;
+    private bool comboQuebrado;
 
     // Use this for initialization
     void Start() {
@@ -29,23 +31,47 @@ public class Bau : MonoBehaviour {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log("Estou aqui!!" + other.gameObject.name);
-
         if (other.gameObject.tag == "pizza") {
-            audio.Play();
+            PizzaEspecial.Tipo tipo = PizzaEspecial.TipoDe(other.gameObject);
+            PizzaEspecial especial = other.GetComponent<PizzaEspecial>();
+            bool queimada = tipo == PizzaEspecial.Tipo.Queimada;
 
-            if (Time.timeSinceLevelLoad - timeSinceLastCollision > multiplicatorTimeLimit) {
+            if (comboQuebrado || Time.timeSinceLevelLoad - timeSinceLastCollision > multiplicatorTimeLimit) {
                 multiplicationRatio = 1;
             } else {
                 multiplicationRatio++;
             }
+            comboQuebrado = queimada;
 
-            score.SomarPonto(multiplicationRatio * pontos);
+            // O som sobe de tom a cada pizza do combo; a queimada toca grave
+            audio.pitch = queimada ? 0.6f : Mathf.Min(1f + 0.1f * (multiplicationRatio - 1), 1.6f);
+            audio.Play();
+
+            int ganho;
+            if (queimada) {
+                // Pizza queimada tira pontos (sem deixar o placar negativo) e quebra o combo
+                ganho = -Mathf.Min(pontos * 2, Score.ponto);
+                score.TirarPonto(-ganho);
+            } else {
+                int multiplicador = especial != null ? especial.Multiplicador : 1;
+                ganho = multiplicationRatio * pontos * multiplicador;
+                score.SomarPonto(ganho);
+            }
+
+            if (tipo == PizzaEspecial.Tipo.Vida) {
+                GameObject vidas = GameObject.FindGameObjectWithTag("vidas");
+                if (vidas != null) {
+                    vidas.GetComponent<Vidas>().GanharVida();
+                }
+            }
+
             score.Recorde();
             score.Pontuacao();
 
             timeSinceLastCollision = Time.timeSinceLevelLoad;
             cheio = true;
+
+            GameEvents.NotificarEntrega(multiplicationRatio, ganho, multiplicatorTimeLimit, transform.position, tipo);
 
             Destroy(other.gameObject);
         }
