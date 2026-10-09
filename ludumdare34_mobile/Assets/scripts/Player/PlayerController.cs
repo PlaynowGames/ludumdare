@@ -52,26 +52,17 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 
-		if (transform.position.x == 4) {
-			pls.sprite = players [2];
-		}else if(transform.position.x == -4){
-			pls.sprite = players [2];
+		AtualizarSprite ();
+	}
+
+	// Posições em x = 0, ±2, ±4 usam os sprites 0, 1 e 2 (tolerância evita comparar float com ==)
+	private void AtualizarSprite() {
+		float distancia = Mathf.Abs (transform.position.x);
+		int indice = Mathf.RoundToInt (distancia / 2f);
+
+		if (Mathf.Abs (distancia - indice * 2f) < 0.01f && indice < players.Length) {
+			pls.sprite = players [indice];
 		}
-
-		if (transform.position.x == 2) {
-			pls.sprite = players [1];
-		}else if(transform.position.x == -2){
-			pls.sprite = players [1];
-		}
-
-		
-		if (transform.position.x == 0) {
-			pls.sprite = players [0];
-				}else if(transform.position.x == -0){
-			pls.sprite = players [0];
-		}
-
-
 	}
 
 
