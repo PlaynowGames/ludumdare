@@ -48,7 +48,8 @@ public class scoreAdder : MonoBehaviour
 
 
 
-		Font ArialFont = (Font)Resources.GetBuiltinResource(typeof(Font), "Arial.ttf");
+		// Arial.ttf embutida foi removida do Unity (2022+); LegacyRuntime.ttf é a substituta
+		Font ArialFont = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
 		text.font = ArialFont;
 		text.material = ArialFont.material;
 

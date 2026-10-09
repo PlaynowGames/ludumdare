@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using PizzaPanic;
 
 public class PlayerTouchController : MonoBehaviour {
 
@@ -18,42 +19,45 @@ public class PlayerTouchController : MonoBehaviour {
 	private float input;
 	private float orientation;
 
-	private GUITexture bto;
+	// GUITexture foi removido do Unity: o objeto (chamado "esquerdo" ou "direito")
+	// passa a cobrir a metade correspondente da tela por cálculo direto.
 	public Transform player;
-
-
-
+	private string lado;
+	private Transform bandejaTransform;
 
 	// Use this for initialization
 	void Start () {
 		lastMovementTime = Time.timeSinceLevelLoad;
 		pls = GameObject.FindGameObjectWithTag("hero").GetComponent<SpriteRenderer>();
-		bto = gameObject.GetComponent<GUITexture> ();
+		lado = gameObject.name;
+		GameObject bandeja = GameObject.FindGameObjectWithTag("bandeja");
+		if (bandeja != null) {
+			bandejaTransform = bandeja.transform;
+		}
 		player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
 	}
 
+	// Verifica se o toque caiu na metade da tela deste controle
+	private bool ToqueNoMeuLado (Vector2 posicao) {
+		float meio = Screen.width / 2f;
+		return lado == "esquerdo" ? posicao.x < meio : posicao.x >= meio;
+	}
 
 	// Update is called once per frame
 	void Update () {
 
-		int screenHeight = Screen.height; 
-		int screenWidth = Screen.width;
+		// Quanto mais pizzas na bandeja, mais devagar o jogador anda
+		float atraso = delayBetweenMovements * Difficulty.FatorPeso (Difficulty.PizzasNaBandeja (bandejaTransform));
 
-		if (bto.name == "esquerdo") {
-			bto.pixelInset = new Rect(0, 0, screenWidth /2, screenHeight);
-		} else if (bto.name == "direito") {
-			bto.pixelInset = new Rect(screenWidth /2, 0, screenWidth /2, screenHeight);
-	    }
-
-		if (Time.timeSinceLevelLoad - lastMovementTime >= delayBetweenMovements) {
+		if (Time.timeSinceLevelLoad - lastMovementTime >= atraso) {
 
 			foreach (UnityEngine.Touch touch in Input.touches) {
 
-				if (bto.HitTest (touch.position)) {
+				if (ToqueNoMeuLado (touch.position)) {
 
 					if (touch.phase != TouchPhase.Ended) {
-						if (bto.name == "direito") {
+						if (lado == "direito") {
 
 							orientation = Mathf.Abs (player.transform.localScale.x);
 							if (player.transform.localScale.x != orientation) { //Looking to other direction
@@ -67,7 +71,7 @@ public class PlayerTouchController : MonoBehaviour {
 						}
 
 
-						if (bto.name == "esquerdo") {
+						if (lado == "esquerdo") {
 							orientation = Mathf.Abs (player.transform.localScale.x);
 							if (player.transform.localScale.x != -orientation) {//Looking to other direction 
 								player.transform.localScale = new Vector3(-player.transform.localScale.x, player.transform.localScale.y, player.transform.localScale.z);
@@ -86,26 +90,17 @@ public class PlayerTouchController : MonoBehaviour {
 			}
 		}
 
-		if (player.transform.position.x == 4) {
-			pls.sprite = players [2];
-		}else if(player.transform.position.x == -4){
-			pls.sprite = players [2];
+		AtualizarSprite ();
+	}
+
+	// Posições em x = 0, ±2, ±4 usam os sprites 0, 1 e 2 (tolerância evita comparar float com ==)
+	private void AtualizarSprite() {
+		float distancia = Mathf.Abs (player.transform.position.x);
+		int indice = Mathf.RoundToInt (distancia / 2f);
+
+		if (Mathf.Abs (distancia - indice * 2f) < 0.01f && indice < players.Length) {
+			pls.sprite = players [indice];
 		}
-
-		if (player.transform.position.x == 2) {
-			pls.sprite = players [1];
-		}else if(player.transform.position.x == -2){
-			pls.sprite = players [1];
-		}
-
-		
-		if (player.transform.position.x == 0) {
-			pls.sprite = players [0];
-		}else if(player.transform.position.x == -0){
-			pls.sprite = players [0];
-		}
-
-
 	}
 
 

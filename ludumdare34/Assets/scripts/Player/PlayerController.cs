@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using PizzaPanic;
 
 public class PlayerController : MonoBehaviour {
 
@@ -17,17 +18,26 @@ public class PlayerController : MonoBehaviour {
     private float lastMovementTime;
     private float input;
     private float orientation;
+    private Transform bandejaTransform;
 
     // Use this for initialization
     void Start() {
         lastMovementTime = Time.timeSinceLevelLoad;
         pls = GameObject.FindGameObjectWithTag("hero").GetComponent<SpriteRenderer>();
+
+        GameObject bandeja = GameObject.FindGameObjectWithTag("bandeja");
+        if (bandeja != null) {
+            bandejaTransform = bandeja.transform;
+        }
     }
 
 
     // Update is called once per frame
     void Update() {
-        if (Time.timeSinceLevelLoad - lastMovementTime >= delayBetweenMovements) {
+        // Quanto mais pizzas na bandeja, mais devagar o jogador anda
+        float atraso = delayBetweenMovements * Difficulty.FatorPeso(Difficulty.PizzasNaBandeja(bandejaTransform));
+
+        if (Time.timeSinceLevelLoad - lastMovementTime >= atraso) {
             input = Input.GetAxisRaw("Horizontal");
 
             if (input > 0.1) {
@@ -51,26 +61,17 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
-        if (transform.position.x == 4) {
-            pls.sprite = players[2];
-        } else if (transform.position.x == -4) {
-            pls.sprite = players[2];
+        AtualizarSprite();
+    }
+
+    // Posições em x = 0, ±2, ±4 usam os sprites 0, 1 e 2 (tolerância evita comparar float com ==)
+    private void AtualizarSprite() {
+        float distancia = Mathf.Abs(transform.position.x);
+        int indice = Mathf.RoundToInt(distancia / 2f);
+
+        if (Mathf.Abs(distancia - indice * 2f) < 0.01f && indice < players.Length) {
+            pls.sprite = players[indice];
         }
-
-        if (transform.position.x == 2) {
-            pls.sprite = players[1];
-        } else if (transform.position.x == -2) {
-            pls.sprite = players[1];
-        }
-
-
-        if (transform.position.x == 0) {
-            pls.sprite = players[0];
-        } else if (transform.position.x == -0) {
-            pls.sprite = players[0];
-        }
-
-
     }
 
 

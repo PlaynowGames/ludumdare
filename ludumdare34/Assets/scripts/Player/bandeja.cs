@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Bandeja : MonoBehaviour {
+public class bandeja : MonoBehaviour {
 
     private BoxCollider2D bandej;
     private GameObject bandejaObj;

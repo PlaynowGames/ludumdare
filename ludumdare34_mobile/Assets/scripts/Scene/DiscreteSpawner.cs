@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
+using PizzaPanic;
 
 public class DiscreteSpawner : MonoBehaviour {
 
@@ -13,6 +14,7 @@ public class DiscreteSpawner : MonoBehaviour {
 	private GameObject currentObj;
 	private float timeOfLastSpawn;
 	private Vector3 currentSpawnPos;
+	private int lastPositionIndex = -1;
 
 
 	// Use this for initialization
@@ -25,14 +27,29 @@ public class DiscreteSpawner : MonoBehaviour {
 	void Update () {
 		if (Time.timeSinceLevelLoad >= timeOfLastSpawn + timeBetweenSpawns) {
 
-
-			currentSpawnPos.x = positions[Random.Range(0, positions.Length)];
-			Instantiate(spawnPrefabs[Random.Range(0, spawnPrefabs.Length)], currentSpawnPos, transform.rotation);
+			Spawn ();
+			// Em níveis mais altos caem duas pizzas ao mesmo tempo
+			if (Random.value < Difficulty.ChanceSpawnDuplo) {
+				Spawn ();
+			}
 
 			timeOfLastSpawn = Time.timeSinceLevelLoad;
 		}
 
 		timeBetweenSpawns = Mathf.Clamp (timeBetweenSpawns - reduceTimeRatio * Time.deltaTime, minTimeBetweenSpawns, timeBetweenSpawns);
+	}
+
+	// Cria uma pizza numa posição diferente da anterior, já com a dificuldade e o tipo sorteados
+	private void Spawn () {
+		int index = Random.Range (0, positions.Length);
+		if (positions.Length > 1 && index == lastPositionIndex) {
+			index = (index + 1 + Random.Range (0, positions.Length - 1)) % positions.Length;
+		}
+		lastPositionIndex = index;
+
+		currentSpawnPos.x = positions[index];
+		GameObject obj = Instantiate (spawnPrefabs[Random.Range (0, spawnPrefabs.Length)], currentSpawnPos, transform.rotation) as GameObject;
+		PizzaEspecial.Configurar (obj);
 	}
 
 }

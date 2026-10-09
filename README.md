@@ -1,4 +1,25 @@
-# Ludumdare
+# Ludumdare — Pizza Panic
+
+Jogo 2D feito para a Ludum Dare 34, em Unity (6000.3.9f1). Você é um entregador que equilibra pizzas na bandeja e as entrega nos baús dos motoboys.
+
+## Projetos
+
+- `ludumdare34/` — versão desktop (teclado: setas ou A/D).
+- `ludumdare34_mobile/` — versão mobile (toque na metade esquerda/direita da tela).
+- `Shared/PizzaPanic.Core/` — pacote local usado pelos dois projetos (`Packages/manifest.json`). Contém os sistemas que criam a própria UI por código, sem depender de edição das cenas: HUD de combo, tremor de câmera e partículas, pausa/volume/mudo, tutorial, curva de dificuldade e pizzas especiais.
+
+## Como jogar
+
+- Pegue as pizzas na bandeja e encoste no baú do motoboy para entregar.
+- Entregas seguidas dentro de 1 segundo formam **combo** (a barra no topo mostra o tempo restante).
+- Pizza **dourada** vale x5, pizza **verde** devolve uma vida, pizza **queimada** tira pontos e quebra o combo.
+- Quanto mais pizzas na bandeja, mais lento você fica.
+- A dificuldade sobe com o tempo e com o número de entregas.
+- `Esc` ou `P` (ou o botão **II**) pausa o jogo e abre volume/mudo. O tutorial aparece só na primeira partida.
+
+## Abrindo no Unity
+
+Abra cada projeto com o Unity 6000.3.9f1. Na primeira abertura o Unity atualiza as cenas e gera os `.meta` do pacote `Shared/PizzaPanic.Core`; versione esses arquivos.
 
 - Já que no github não permite salvar pastas em branco, adicionei um shell script caso seja necessário ter algum(s) diretório(s) em branco no repositório. Só lembrar de rodar o `create-gitkeep.sh` antes de mandar as alterações.
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class pizzaColet : MonoBehaviour {
+public class PizzaCollect : MonoBehaviour {
 
     private BoxCollider2D bandeja;
 

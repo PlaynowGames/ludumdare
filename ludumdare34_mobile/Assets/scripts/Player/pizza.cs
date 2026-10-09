@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+using PizzaPanic;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,7 +11,7 @@ public class pizza : MonoBehaviour {
 
 	public float dampTime = 0.15f;
 	private Vidas vida;
-	new private AudioSource audio;
+	private AudioSource audio;
 	public AudioSource fail;
 	private Animator animator;
 
@@ -40,6 +42,12 @@ public class pizza : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D colisor){
 
+		// Pizza de vida e pizza queimada não custam vida ao cair no chão
+		if (colisor.gameObject.name == "chao" && PizzaEspecial.IgnoraChao (gameObject)) {
+			Destroy (gameObject);
+			return;
+		}
+
 		if (!naBandeja) {
 			if (colisor.gameObject.tag == "bandeja") {
 				naBandeja = true;
@@ -63,7 +71,7 @@ public class pizza : MonoBehaviour {
 			vida = go.GetComponent<Vidas>  ();
 			if (vida.ExcluirVida ()) {
 			} else {
-				Application.LoadLevel("GameOver");
+				SceneManager.LoadScene("GameOver");
 			}
 		}
 	}

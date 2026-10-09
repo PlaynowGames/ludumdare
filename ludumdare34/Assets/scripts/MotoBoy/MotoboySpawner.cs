@@ -31,8 +31,12 @@ public class MotoboySpawner : MonoBehaviour {
     public void Spawn() {
         int i = Random.Range(0, respectivePositions.Length);
 
-        currentObj = spawnPrefabs[i];
         currentSpawnPos.x = respectivePositions[i];
+
+        // Configura a instância, nunca o prefab (senão o asset é alterado no editor)
+        currentObj = Instantiate(spawnPrefabs[i], currentSpawnPos, transform.rotation) as GameObject;
+        if (motoboys)
+            currentObj.transform.parent = motoboys.transform;
 
         MotoboyController controller = currentObj.GetComponent<MotoboyController>();
 
@@ -48,8 +52,5 @@ public class MotoboySpawner : MonoBehaviour {
         controller.isGoing = true;
         controller.isDelivering = false;
         controller.spawner = gameObject;
-        currentObj = Instantiate(currentObj, currentSpawnPos, transform.rotation) as GameObject;
-        if (motoboys)
-            currentObj.transform.parent = motoboys.transform;
     }
 }
