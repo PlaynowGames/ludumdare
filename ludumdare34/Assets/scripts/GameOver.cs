@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class GameOver : MonoBehaviour {
@@ -28,7 +29,7 @@ public class GameOver : MonoBehaviour {
 
 
         if (play) {
-            Application.LoadLevel(1);
+            SceneManager.LoadScene(1);
             Score.Inicializar();
         }
 

@@ -4,7 +4,7 @@ using System.Collections;
 public class MusicController : MonoBehaviour {
 
 
-	new public AudioSource audio;
+	public AudioSource audio;
 	public AudioClip startClip;
 	public AudioClip loopClip;
 	public float loopClipStartPosition = 44.5f;

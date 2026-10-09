@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class Menu : MonoBehaviour {
@@ -15,7 +16,7 @@ public class Menu : MonoBehaviour {
         bool sair = GUI.Button(new Rect(Screen.width - 250, Screen.height - 100, 178, 80), btnVoltar);
 
         if (play) {
-            Application.LoadLevel(1);
+            SceneManager.LoadScene(1);
             Score.Inicializar();
         }
 

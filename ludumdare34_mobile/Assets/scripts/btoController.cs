@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class btoController : MonoBehaviour {
 
 
 	public void botaoPlay(){
-		Application.LoadLevel (1);
+		SceneManager.LoadScene(1);
 		scoreAdder.Inicializar ();
 	}
 

@@ -7,7 +7,7 @@ public class Bau : MonoBehaviour {
 
     private Score score;
     private int pontos = 10;
-    new private AudioSource audio;
+    private AudioSource audio;
 
     private float timeSinceLastCollision;
     private int multiplicationRatio = 1;

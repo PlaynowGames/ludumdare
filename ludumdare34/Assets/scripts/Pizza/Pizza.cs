@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,7 +10,7 @@ public class Pizza : MonoBehaviour {
 
     public float dampTime = 0.15f;
     private Vidas vida;
-    new private AudioSource audio;
+    private AudioSource audio;
     public AudioSource fail;
 
     private GameObject go;
@@ -43,7 +44,7 @@ public class Pizza : MonoBehaviour {
             if (vida.ExcluirVida()) {
                 fail.Play();
             } else {
-                Application.LoadLevel("GameOver");
+                SceneManager.LoadScene("GameOver");
             }
         }
     }
