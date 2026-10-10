@@ -2,11 +2,13 @@
 
 Jogo 2D feito para a Ludum Dare 34, em Unity (6000.3.9f1). Você é um entregador que equilibra pizzas na bandeja e as entrega nos baús dos motoboys.
 
-## Projetos
+## Projeto
 
-- `ludumdare34/` — versão desktop (teclado: setas ou A/D).
-- `ludumdare34_mobile/` — versão mobile (toque na metade esquerda/direita da tela).
-- `Shared/PizzaPanic.Core/` — pacote local usado pelos dois projetos (`Packages/manifest.json`). Contém os sistemas que criam a própria UI por código, sem depender de edição das cenas: HUD de combo, tremor de câmera e partículas, pausa/volume/mudo, tutorial, curva de dificuldade e pizzas especiais.
+Há um único projeto Unity, `ludumdare34_mobile/`, que roda em desktop e em celular:
+
+- **Desktop:** setas ou A/D para mover; menus e botões com o mouse.
+- **Mobile:** toque na metade esquerda ou direita da tela.
+- `ludumdare34_mobile/Packages/com.playnow.pizzapanic.core/` — pacote embutido no projeto. Contém os sistemas que criam a própria UI por código, sem depender de edição das cenas: HUD de combo, tremor de câmera e partículas, pausa/volume/mudo, tutorial, curva de dificuldade e pizzas especiais.
 
 ## Como jogar
 
@@ -19,7 +21,7 @@ Jogo 2D feito para a Ludum Dare 34, em Unity (6000.3.9f1). Você é um entregado
 
 ## Abrindo no Unity
 
-Abra cada projeto com o Unity 6000.3.9f1. Na primeira abertura o Unity atualiza as cenas e gera os `.meta` do pacote `Shared/PizzaPanic.Core`; versione esses arquivos.
+Abra a pasta `ludumdare34_mobile/` com o Unity 6000.3.9f1. Para gerar o jogo de desktop, selecione a plataforma **Windows/Mac/Linux** em Build Profiles; para celular, **Android** ou **iOS**. A mesma base serve para todas.
 
 - Já que no github não permite salvar pastas em branco, adicionei um shell script caso seja necessário ter algum(s) diretório(s) em branco no repositório. Só lembrar de rodar o `create-gitkeep.sh` antes de mandar as alterações.
 
