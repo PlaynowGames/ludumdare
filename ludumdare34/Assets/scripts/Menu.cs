@@ -1,28 +1,26 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections;
+using PizzaPanic;
 
 public class Menu : MonoBehaviour {
 
+    // Campos mantidos para não perder as referências já salvas na cena
     public GUISkin skinMenu;
     public Texture2D btnMenuPlay;
     public Texture2D titulo;
     public Texture2D btnVoltar;
 
-    void OnGUI() {
-        GUI.skin = skinMenu;
+    void Start() {
+        MenuBotoes.Criar(btnMenuPlay, btnVoltar, Jogar, Sair);
+    }
 
-        bool play = GUI.Button(new Rect(Screen.width - 950, Screen.height - 100, 178, 80), btnMenuPlay);
-        bool sair = GUI.Button(new Rect(Screen.width - 250, Screen.height - 100, 178, 80), btnVoltar);
+    void Jogar() {
+        Score.Inicializar();
+        SceneManager.LoadScene(1);
+    }
 
-        if (play) {
-            SceneManager.LoadScene(1);
-            Score.Inicializar();
-        }
-
-        if (sair) {
-            Application.Quit();
-            Debug.Log("Saiu do jogo");
-        }
+    void Sair() {
+        Application.Quit();
+        Debug.Log("Saiu do jogo");
     }
 }
